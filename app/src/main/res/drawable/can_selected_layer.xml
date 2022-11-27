@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/marble_blue"
+        android:id="@+id/backStoneCan"/>
+    <item android:drawable="@drawable/can_selected_image"/>
+    <item android:drawable="@drawable/can_selected_filter"/>
+</layer-list>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp"
+    android:background="@drawable/gradient_background"
+    tools:context=".mains.ChooseLayout">
+
+
+    <HorizontalScrollView
+        android:id="@+id/BoardsScroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="boards list"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/board1"
+                android:layout_width="193dp"
+                android:layout_height="193dp"
+
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/empty_board_hor"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageView
+                android:id="@+id/board2"
+                android:layout_width="193dp"
+                android:layout_height="193dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintStart_toEndOf="@+id/board1"
+                app:layout_constraintTop_toTopOf="@+id/board1"
+                app:srcCompat="@drawable/empty_board_hor"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageView
+                android:id="@+id/board3"
+                android:layout_width="193dp"
+                android:layout_height="193dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintStart_toEndOf="@+id/board2"
+                app:layout_constraintTop_toTopOf="@+id/board2"
+                app:srcCompat="@drawable/empty_board_hor" />
+
+            <ImageView
+                android:id="@+id/board4"
+                android:layout_width="193dp"
+                android:layout_height="193dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintStart_toEndOf="@+id/board3"
+                app:layout_constraintTop_toTopOf="@+id/board3"
+                app:srcCompat="@drawable/empty_board_hor" />
+
+            <ImageView
+                android:id="@+id/board5"
+                android:layout_width="193dp"
+                android:layout_height="193dp"
+
+                android:layout_marginStart="50dp"
+                app:layout_constraintStart_toEndOf="@+id/board4"
+                app:layout_constraintTop_toTopOf="@+id/board4"
+                app:srcCompat="@drawable/empty_board_hor"
+                tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
+
+            <ImageView
+                android:id="@+id/board6"
+                android:layout_width="193dp"
+                android:layout_height="193dp"
+
+                android:layout_marginStart="50dp"
+                app:layout_constraintStart_toEndOf="@+id/board5"
+                app:layout_constraintTop_toTopOf="@+id/board5"
+                app:srcCompat="@drawable/empty_board_hor"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageView
+                android:id="@+id/board7"
+                android:layout_width="193dp"
+                android:layout_height="193dp"
+
+                android:layout_marginStart="50dp"
+                app:layout_constraintStart_toEndOf="@+id/board6"
+                app:layout_constraintTop_toTopOf="@+id/board6"
+                app:srcCompat="@drawable/empty_board_hor" />
+
+            <ImageView
+                android:id="@+id/board8"
+                android:layout_width="193dp"
+                android:layout_height="193dp"
+                android:layout_marginStart="50dp"
+                app:layout_constraintStart_toEndOf="@+id/board7"
+                app:layout_constraintTop_toTopOf="@+id/board7"
+                app:srcCompat="@drawable/empty_board_hor" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onClick2"
+        android:text="Button"
+        app:layout_constraintBottom_toTopOf="@+id/BoardsScroll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/shuffle"
+        android:layout_width="60dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/shuffle"
+        app:layout_constraintEnd_toEndOf="@+id/BoardsScroll"
+        app:layout_constraintStart_toStartOf="@+id/BoardsScroll"
+        app:layout_constraintTop_toBottomOf="@+id/BoardsScroll"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

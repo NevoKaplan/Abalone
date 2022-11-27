@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/marble_blue"
+        android:id="@+id/backStoneMove"/>
+    <item android:drawable="@drawable/empty_background"/>
+    <item android:drawable="@drawable/filter" />
+</layer-list>
