@@ -13,7 +13,7 @@ public class Board {
     protected int player;
     public Stone[][] hex;
     final private static Scanner in = new Scanner(System.in);
-    private final int[][] dirArr = {{-1, -1}, {-1, 0}, {0, -1}, {0, 1}, {1, 0}, {1, 1}};
+    protected final int[][] dirArr = {{-1, -1}, {-1, 0}, {0, -1}, {0, 1}, {1, 0}, {1, 1}};
     public int deadBlue = 0, deadRed = 0;
     public ArrayList<Stone> selected = new ArrayList<>();
     protected ArrayList<Stone> toBe = new ArrayList<>();
@@ -167,15 +167,18 @@ public class Board {
                     if (AI.hasInstance()) {
 
                         ai = AI.getInstance(player * -1);
-                        ArrayList<Stone>[] stonesToMove = ai.getMove(this);
-                        int[] stonePosition;
+
+                        AIBoard aiBoard = ai.getMove(this);
+                        updateBoardWithAI(aiBoard);
+
+                        /*int[] stonePosition;
                         for (Stone stone2 : stonesToMove[0]) {
                             stonePosition = stone2.getPosition();
                             changeSelected(this.hex[stonePosition[0]][stonePosition[1]]);
                         }
                         stonePosition = stonesToMove[1].get(0).getPosition();  // get the move to stone
                         this.moveStones(this.hex[stonePosition[0]][stonePosition[1]]);
-                        this.cleanSelected();
+                        this.cleanSelected();*/
                     }
                     else
                         player *= -1;
@@ -332,11 +335,15 @@ public class Board {
     // actually push (not side push), might also push enemy
     private void actuallyPush() {
         int size = selectedSize;
-        Stone t = hex[selected.get(0).row][selected.get(0).col];
+        Stone first = selected.get(0);
         for (int i = size - 2; i >= 0; i--) {
-            selected.get(i + 1).setMainNum(selected.get(i).getMainNum());
+            Stone next = selected.get(i + 1);
+            Stone current = selected.get(i);
+            next.setMainNum(current.getMainNum());
+            next.setOgNum(next.getMainNum());
         }
-        t.setMainNum(0);
+        first.setMainNum(0);
+        first.setOgNum(0);
     }
 
     // checks if stone should be killed and moves on
@@ -412,10 +419,9 @@ public class Board {
                         }
                     }
                     catch (IndexOutOfBoundsException e) {
-
+                        flag = false;
                     }
                     catch (Exception e) {
-                        flag = false;
                         System.out.println(e.getMessage());
                     }
 
@@ -433,7 +439,7 @@ public class Board {
     }
 
     // this handles lines and checks if they can move
-    private void targetLine(int drow, int dcol, Stone mainStone, int count, ArrayList<Stone> targets, int size) {
+    protected void targetLine(int drow, int dcol, Stone mainStone, int count, ArrayList<Stone> targets, int size) {
         if (size <= count)
             return;
         try {
@@ -495,8 +501,8 @@ public class Board {
         if (selected.contains(stone)) {
             if (selectedSize >= 3) {
                 Stone.sort(selected);
-                if (selected.get(1).equals(stone)) {
-                    Stone temp = selected.get(2);
+                if (selected.get(1).equals(stone)) { // if the middle one is the one you remove...
+                    Stone temp = selected.get(2); // also remove another one
                     changeSelected(stone);
                     changeSelected(temp);
                     return true;
@@ -596,5 +602,15 @@ public class Board {
 
     public ArrayList<Stone> getTargets() {
         return targets;
+    }
+
+    private void updateBoardWithAI(AIBoard aiBoard) {
+        for (int i = 0; i < hex.length; i++) {
+            for (int j = 0; j < hex[i].length; j++) {
+                Stone main = this.hex[i][j], other = aiBoard.hex[i][j];
+                main.setMainNum(other.getMainNum());
+                main.setOgNum(other.getOgNum());
+            }
+        }
     }
 }

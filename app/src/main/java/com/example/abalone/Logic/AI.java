@@ -1,13 +1,16 @@
 package com.example.abalone.Logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class AI {
     private int AiPlayer;
     private static AI instance = null;
     private static Random rnd = new Random();
-
 
 
     public void setAiPlayer(int aiPlayer) {
@@ -38,21 +41,24 @@ public class AI {
     }
 
     public Board bestMove(AIBoard board) {
-        Board bestSelected = null;
 
-        ArrayList<AIBoard> children = board.getNextBoards();
-        AIBoard board1;
+        ArrayList<AIBoard>[] children = board.getNextBoards();
 
-  /*      do {
-            board1 = children.get(rnd.nextInt(children.size()));
-        } while(!board1.sideMoveable || board1.selectedSize != 2 || board1.toBe.get(0).row != 4);
-*/
-        System.out.println("Size: " + children.size());
-        for (AIBoard a : children) {
-            a.print();
+        System.out.println("\n\nSize: " + (children[0].size() + children[1].size() + children[2].size()));
+
+        ArrayList<AIBoard> fullChildren = connectLists(children);
+        fullChildren.sort(Comparator.comparingDouble(AIBoard::getVal)); // sorting by parameter low -> high
+
+        List<AIBoard> topBoards = fullChildren.stream().limit(10).collect(Collectors.toList()); // get top 10
+        for (AIBoard b : topBoards) {
+            System.out.println(b.getVal());
         }
         System.out.println("END");
-        return children.get(rnd.nextInt(children.size()));
+        return topBoards.get(0);
+
+        //ArrayList<AIBoard> realChildren = connectLists(children);
+        //Arrays.sort(realChildren, <>);
+        //return children.get(rnd.nextInt(children.size()));
         /*System.out.println("Before: " + children.size());
         int i = 1;
         for (AIBoard child : children) {
@@ -83,6 +89,15 @@ public class AI {
         return children.get(rnd.nextInt(children.size()));*/
     }
 
+    // firsts will be the triples, then the doubles and then the singles
+    private ArrayList<AIBoard> connectLists(ArrayList<AIBoard>[] nextBoards) {
+        ArrayList<AIBoard> fina = new ArrayList<>();
+        for (int i = nextBoards.length-1; i >= 0; i--) {
+            fina.addAll(nextBoards[i]);
+        }
+        return fina;
+    }
+
     private double checkBoard(AIBoard board, int depth, double alpha, double beta) {
 
         double val;
@@ -91,12 +106,12 @@ public class AI {
             return Double.MAX_VALUE * winner;
         }
         if (depth == 0) {
-            val = board.evaluate();
+            val = board.evaluate(AiPlayer, 0);
             board.setVal(val);
             return val;
         }
 
-        ArrayList<AIBoard> nextBoards = board.getNextBoards();
+        ArrayList<AIBoard> nextBoards = connectLists(board.getNextBoards());
 
         // checking whose turn it is
         if (board.player == AiPlayer) {
@@ -117,14 +132,17 @@ public class AI {
         }
     }
 
-    public ArrayList<Stone>[] getMove(Board board) {
+    public ArrayList<Stone>[] getMoveOld(Board board) {
         AIBoard bestBoard = (AIBoard)bestMove(new AIBoard(board));
-        System.out.println("HERE1");
         ArrayList<Stone>[] stones = bestBoard.getBestSelected();
         if (!stones[0].isEmpty())
             return stones;
-        System.out.println("ASJDOIA");
         return null;
+    }
+
+    public AIBoard getMove(Board board) {
+        AIBoard bestBoard = (AIBoard)bestMove(new AIBoard(board));
+        return bestBoard;
     }
 
 }
