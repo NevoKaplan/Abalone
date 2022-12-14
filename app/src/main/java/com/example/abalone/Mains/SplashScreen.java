@@ -1,4 +1,4 @@
-package com.example.abalone.mains;
+package com.example.abalone.Mains;
 
 import androidx.appcompat.app.AppCompatActivity;
 

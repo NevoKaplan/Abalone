@@ -42,14 +42,11 @@ public class Stone {
 
     public void setSelected(boolean bool) {this.isSelected = bool;}
 
-    public boolean isLarger(Stone stone) { // returns true if parameter is larger than instance
+    public boolean isBefore(Stone stone) { // returns true if instance is before the parameter
         if (this.row < stone.row)
             return false;
-        if (this.row == stone.row) {
-            if (this.col < stone.col)
-                return false;
-            return true;
-        }
+        if (this.row == stone.row)
+            return this.col >= stone.col;
         return true;
     }
 
@@ -67,7 +64,7 @@ public class Stone {
                     stones.remove(j+1);
                     size--;
                 }
-                else if (current.isLarger(next)) {
+                else if (current.isBefore(next)) {
                     Stone stone = stones.get(j);
                     stones.set(j, stones.get(j + 1));
                     stones.set(j+1, stone);

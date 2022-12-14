@@ -6,14 +6,14 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/abalone_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/abalone_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Abalone"
         tools:targetApi="31">
         <activity
-            android:name=".mains.SplashScreen"
+            android:name=".Mains.SplashScreen"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name=".mains.ChooseLayout"
+            android:name=".Mains.ChooseLayout"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
@@ -36,7 +36,7 @@
         </activity>
 
         <activity
-            android:name=".mains.MainActivity"
+            android:name=".Mains.MainActivity"
             android:configChanges="screenSize|orientation|screenLayout|navigation"
             android:exported="false">
 

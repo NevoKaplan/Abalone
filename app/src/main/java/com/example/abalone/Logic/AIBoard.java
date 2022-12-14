@@ -10,7 +10,7 @@ public class AIBoard extends Board {
     int depth;
     private double val;
     private int preDeadRed, preDeadBlue;
-    private ArrayList<Stone>[] bestSelected = new ArrayList[2];
+    private ArrayList<Stone>[] madeMove = new ArrayList[2];
     public static int run = 0;
 
 
@@ -35,13 +35,14 @@ public class AIBoard extends Board {
         updateBoard(board.hex);
         this.player = AI.getInstance(player * -1).getAiPlayer();
         this.depth = MAX_DEPTH;
-        for (int i = 0; i < bestSelected.length; i++)
-            bestSelected[i] = new ArrayList<>();
+        for (int i = 0; i < madeMove.length; i++)
+            madeMove[i] = new ArrayList<>();
         alreadyBoardsCount = 0;
         alreadyBoards.clear();
         preDeadBlue = deadBlue;
         preDeadRed = deadRed;
 
+        sideMoveable = false;
     }
 
     public AIBoard(AIBoard board) {
@@ -51,10 +52,12 @@ public class AIBoard extends Board {
         this.player = board.player*-1;
         this.depth = board.depth-1;
         this.val = 0;
-        for (int i = 0; i < bestSelected.length; i++)
-            bestSelected[i] = new ArrayList<>();
+        for (int i = 0; i < madeMove.length; i++)
+            madeMove[i] = new ArrayList<>();
         preDeadBlue = deadBlue;
         preDeadRed = deadRed;
+
+        sideMoveable = false;
     }
 
     private void updateBoard(Stone[][] stones) {
@@ -75,24 +78,24 @@ public class AIBoard extends Board {
     public void setVal(double val) {
         this.val = val;
     }
-    public ArrayList<Stone>[] getBestSelected() {
-        return this.bestSelected;
+    public ArrayList<Stone>[] getMadeMove() {
+        return this.madeMove;
     }
     public void setBestSelected(ArrayList<Stone> selected, ArrayList<Stone> toBe) {
         for (Stone stone : selected) {
-            this.bestSelected[0].add(stone);
+            this.madeMove[0].add(stone);
         }
         for (Stone stone : toBe) {
-            this.bestSelected[1].add(stone);
+            this.madeMove[1].add(stone);
         }
     }
 
     public void setBestSelected() {
         for (Stone stone : this.selected) {
-            this.bestSelected[0].add(stone);
+            this.madeMove[0].add(stone);
         }
         for (Stone stone : this.toBe) {
-            this.bestSelected[1].add(stone);
+            this.madeMove[1].add(stone);
         }
     }
 
@@ -114,7 +117,6 @@ public class AIBoard extends Board {
 
         for (int i = 0; i < this.hex.length && count <= 14; i++) {
             for (int j = 0; j < this.hex[i].length; j++) {
-                System.out.println(hex[i][j]);
                 if (this.hex[i][j].getMainNum() == this.player) {
                     count++;
                     nextBoards[0].addAll(findMoveSingle(hex[i][j]));
@@ -133,6 +135,8 @@ public class AIBoard extends Board {
                             tempSelected.add(hex[i][j]);
                             tempSelected.add(availlable);
                             tempSelected.add(available2);
+
+                            Stone.sort(tempSelected);
                             nextBoards[2].addAll(findMoveMultiple(tempSelected)); // triple
                         }
                     }
@@ -148,6 +152,8 @@ public class AIBoard extends Board {
         for (Stone target : targets) {
             AIBoard aiBoard = new AIBoard(this);
             aiBoard.changeSelected(aiBoard.hex[start.row][start.col]);
+            for (Stone s : aiBoard.selected)
+                aiBoard.madeMove[0].add(new Stone(s));
             aiBoard.doMoveSingle(aiBoard.hex[target.row][target.col]);
             boards.add(aiBoard);
             aiBoard.cleanSelected();
@@ -156,12 +162,18 @@ public class AIBoard extends Board {
     }
 
     private ArrayList<AIBoard> findMoveMultiple(ArrayList<Stone> starts) {
+
         ArrayList<AIBoard> boards = new ArrayList<>();
         ArrayList<Stone> targets = availableTargetsMultiple(starts);
+
         for (Stone target : targets) {
             AIBoard aiBoard = new AIBoard(this);
             for (Stone start : starts)
                 aiBoard.changeSelected(aiBoard.hex[start.row][start.col]);
+
+            for (Stone s : aiBoard.selected)
+                aiBoard.madeMove[0].add(new Stone(s));
+
             aiBoard.doMoveMultiple(aiBoard.hex[target.row][target.col]);
             boards.add(aiBoard);
             aiBoard.cleanSelected();
@@ -244,6 +256,8 @@ public class AIBoard extends Board {
         moveTo.setMainNum(0);
 
         this.toBe.add(moveTo);
+        for (Stone s : this.toBe)
+            this.madeMove[1].add(new Stone(s));
 
         Stone last = selected.get(0);
         int drow = last.row - moveTo.row;
@@ -254,14 +268,22 @@ public class AIBoard extends Board {
 
     private void doMoveMultiple(Stone moveTo) {
         boolean reverse = this.shouldReverse(moveTo);
-        if (beforeSideMove(moveTo, true))
+
+        this.madeMove[1].add(new Stone(moveTo));
+        if (beforeSideMove(moveTo, true)) {
+            this.sideMoveable = true;
             return;
+        }
 
         shouldReverse2(reverse);
 
         Stone last = selected.get(selectedSize - 1);
         int drow = moveTo.row - last.row;
         int dcol = moveTo.col - last.col;
+
+        this.madeMove[1] = new ArrayList<>();
+        for (Stone s : this.toBe)
+            this.madeMove[1].add(new Stone(s));
 
         beforeLineMove(drow, dcol);
 
@@ -334,6 +356,8 @@ public class AIBoard extends Board {
                 break;
             case 1:
                 sum += 5;
+                break;
+            default:
                 break;
         }
 
@@ -410,12 +434,13 @@ public class AIBoard extends Board {
         Iterator<Stone> it;
         boolean flag, added; // flag checks if stones can be moved to the side
 
+
         for (int[] var : dirArr) { // list of all directions
             it = chosen.iterator();
             flag = true;
             added = false;
             ArrayList<Stone> maybe = new ArrayList<>();
-            if ((var[0] != drow || var[1] != dcol) && (var[0] != -drow || var[1] != -dcol)) { // don't check the already checked
+            if (!((var[0] == drow && var[1] == dcol) || (var[0] == -drow && var[1] == -dcol))) { // don't check the already checked
                 if (((first.col < first.col + var[1]) && (first.row + var[0] <= first.row)) || (drow == 0 && first.col <= first.col + var[1])) { // change only if the current one is more to the left than the next one
                     Stone.reverseList(chosen);
                 }
@@ -444,9 +469,9 @@ public class AIBoard extends Board {
             }
             if (flag) { // if all stones can be moved then add the maybe list
                 stones.addAll(maybe);
-                Stone.sort(stones);
             }
         }
+        Stone.sort(stones);
         return stones;
     }
 
@@ -475,19 +500,15 @@ public class AIBoard extends Board {
         int drow = first.row - second.row;
         int dcol = first.col - second.col;
         // checks the edges
-        try {
+        if (first.row + drow < hex.length && first.row + drow >= 0 && first.col + dcol < hex.length && first.col + dcol >= 0) {
             if (hex[first.row + drow][first.col + dcol].getMainNum() == player) {
                 stones.add(hex[first.row + drow][first.col + dcol]);
             }
         }
-        catch (Exception e) {System.out.println("8");}
-        try {
+        if (second.row - drow < hex.length && second.row - drow >= 0 && second.col - dcol < hex.length && second.col - dcol >= 0) {
             if (hex[second.row - drow][second.col - dcol].getMainNum() == player) {
                 stones.add(hex[second.row - drow][second.col - dcol]);
             }
-        }
-        catch (Exception e) {
-            System.out.println("9");
         }
         return stones;
     }

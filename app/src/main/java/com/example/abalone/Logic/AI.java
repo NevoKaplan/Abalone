@@ -1,7 +1,6 @@
 package com.example.abalone.Logic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -47,11 +46,17 @@ public class AI {
         System.out.println("\n\nSize: " + (children[0].size() + children[1].size() + children[2].size()));
 
         ArrayList<AIBoard> fullChildren = connectLists(children);
+        int sum = 0;
+        for (AIBoard a : fullChildren) {
+            sum += a.getVal();
+        }
         fullChildren.sort(Comparator.comparingDouble(AIBoard::getVal)); // sorting by parameter low -> high
 
+        System.out.println("\n\nSUM: " + sum + "\n");
         List<AIBoard> topBoards = fullChildren.stream().limit(10).collect(Collectors.toList()); // get top 10
         for (AIBoard b : topBoards) {
             System.out.println(b.getVal());
+            b.print();
         }
         System.out.println("END");
         return topBoards.get(0);
@@ -72,7 +77,7 @@ public class AI {
                 double val = child.getVal();
                 if (val >= bestVal) {
                     bestVal = val;
-                    bestSelected = child.getBestSelected();
+                    bestSelected = child.getMadeMove();
                 }
             }
         } else {
@@ -81,7 +86,7 @@ public class AI {
                 double val = child.getVal();
                 if (val <= bestVal) {
                     bestVal = val;
-                    bestSelected = child.getBestSelected();
+                    bestSelected = child.getMadeMove();
                 }
             }
         }
@@ -93,7 +98,10 @@ public class AI {
     private ArrayList<AIBoard> connectLists(ArrayList<AIBoard>[] nextBoards) {
         ArrayList<AIBoard> fina = new ArrayList<>();
         for (int i = nextBoards.length-1; i >= 0; i--) {
-            fina.addAll(nextBoards[i]);
+            for (AIBoard board : nextBoards[i]) {
+                board.setVal(board.evaluate(AiPlayer, i));
+                fina.add(board);
+            }
         }
         return fina;
     }
@@ -134,7 +142,7 @@ public class AI {
 
     public ArrayList<Stone>[] getMoveOld(Board board) {
         AIBoard bestBoard = (AIBoard)bestMove(new AIBoard(board));
-        ArrayList<Stone>[] stones = bestBoard.getBestSelected();
+        ArrayList<Stone>[] stones = bestBoard.getMadeMove();
         if (!stones[0].isEmpty())
             return stones;
         return null;
@@ -142,6 +150,7 @@ public class AI {
 
     public AIBoard getMove(Board board) {
         AIBoard bestBoard = (AIBoard)bestMove(new AIBoard(board));
+
         return bestBoard;
     }
 

@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mains.SplashScreen">
+    tools:context=".Mains.SplashScreen">
 
     <ImageView
         android:id="@+id/circle"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:background="@drawable/circle"
+        android:background="@drawable/abalone_logo"
+        android:contentDescription="LOGO"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="LOGO">
+        app:layout_constraintTop_toTopOf="parent">
 
     </ImageView>
 

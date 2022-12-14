@@ -4,12 +4,10 @@ import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
-import com.example.abalone.R;
-import com.example.abalone.mains.ChooseLayout;
+import com.example.abalone.Mains.ChooseLayout;
 
 public class fakeBoard extends ChooseLayout {
     private int[][] idArray = new int[9][9];

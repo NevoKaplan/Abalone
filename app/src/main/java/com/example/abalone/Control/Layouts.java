@@ -18,7 +18,7 @@ public class Layouts {
     }
 
     // stones layout
-    public static int[][] organizeNormal1() {
+    public static int[][] organizeEmpty() {
         int[][] placeAcc =
                 {
                         {0,0,0,0,0,4,4,4,4},
@@ -33,7 +33,7 @@ public class Layouts {
                 };
         return placeAcc;
     }
-    public static int[][] organizeNormal() {
+    public static int[][] organizeNormal2() {
         int[][] placeAcc =
                 {
                         {1,1,1,1,1,4,4,4,4},
@@ -45,6 +45,22 @@ public class Layouts {
                         {4,4,0,0,-1,-1,-1,0,0},
                         {4,4,4,-1,-1,-1,-1,-1,-1},
                         {4,4,4,4,-1,-1,-1,-1,-1}
+                };
+        return placeAcc;
+    }
+
+    public static int[][] organizeNormal() {
+        int[][] placeAcc =
+                {
+                        {1,1,1,1,1,4,4,4,4},
+                        {1,1,1,1,1,1,4,4,4},
+                        {0,0,1,1,1,0,0,4,4},
+                        {0,0,0,0,0,0,0,0,4},
+                        {0,0,0,0,0,0,0,0,0},
+                        {4,0,0,0,0,-1,0,0,0},
+                        {4,4,0,0,-1,-1,-1,0,0},
+                        {4,4,4,-1,-1,-1,-1,-1,-1},
+                        {4,4,4,4,-1,-1,-1,-1,0}
                 };
         return placeAcc;
     }

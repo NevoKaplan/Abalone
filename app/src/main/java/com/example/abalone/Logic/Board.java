@@ -169,8 +169,18 @@ public class Board {
                         ai = AI.getInstance(player * -1);
 
                         AIBoard aiBoard = ai.getMove(this);
-                        updateBoardWithAI(aiBoard);
 
+                        updateBoardWithAI(aiBoard);
+                        System.out.println("MadeMove: ");
+                        for (int i = 0; i < 2; i++) {
+                            if (i == 0)
+                                System.out.println("Before: ");
+                            else
+                                System.out.println("After: ");
+                            for (Stone s: aiBoard.getMadeMove()[i]) {
+                                System.out.println(s);
+                            }
+                        }
                         /*int[] stonePosition;
                         for (Stone stone2 : stonesToMove[0]) {
                             stonePosition = stone2.getPosition();
@@ -248,7 +258,7 @@ public class Board {
         boolean reverse = false;
 
         Stone.sort(selected);
-        if (!moveTo.isLarger(selected.get(0))) {
+        if (!moveTo.isBefore(selected.get(0))) {
             Stone.reverseList(selected);
             reverse = true; // if one is reversed, all are REVERSED!
         }
@@ -267,22 +277,27 @@ public class Board {
         Stone last = selected.get(selectedSize - 1);
         int drow = moveTo.row - last.row;
         int dcol = moveTo.col - last.col;
+
+
         if (selectedSize > 1) {
             Stone secondLast = selected.get(selectedSize - 2);
             if (makeSureSelected(moveTo, last.row - secondLast.row, last.col - secondLast.col, last)) { // checks the line to see if moveTo is in the same line - if it is move on...
                 return false;
             }
             else {
-                if ((drow >= 1 && dcol <= -1) || (drow <= -1 && dcol >= 1)) { // if more than 1 selected and not same line and too far, need to reverse
+
+                if ((drow == 1 && dcol <= -1) || (drow == -1 && dcol >= 1)) { // if more than 1 selected and not same line and too far, need to reverse
                     Stone.reverseList(selected);
                     last = selected.get(selectedSize - 1);
                     drow = (moveTo.row - last.row);
                     dcol = (moveTo.col - last.col);
                 }
 
+
                 if (reallyUse) {
                     this.sideMove(drow, dcol);
                 }
+
                 return true;
             }
         }
@@ -325,10 +340,13 @@ public class Board {
             dcol = (moveTo.col - last.col);
         }*/
 
+
         for (Stone temp : selected) {
+
             int num = hex[temp.row + drow][temp.col + dcol].getMainNum();
             hex[temp.row + drow][temp.col + dcol].setMainNum(temp.getMainNum());
             temp.setMainNum(num);
+
         }
     }
 
@@ -402,7 +420,7 @@ public class Board {
             flag = true;
             added = false;
             ArrayList<Stone> maybe = new ArrayList<>();
-            if ((var[0] != drow || var[1] != dcol) && (var[0] != -drow || var[1] != -dcol)) { // don't check the already checked
+            if (!((var[0] == drow && var[1] == dcol) || (var[0] == -drow && var[1] == -dcol))) { // don't check the already checked
                 if (((first.col < first.col + var[1]) && (first.row + var[0] <= first.row)) || (drow == 0 && first.col <= first.col + var[1])) { // change only if the current one is more to the left than the next one
                     Stone.reverseList(selected);
                 }
@@ -432,9 +450,9 @@ public class Board {
             }
             if (flag) { // if all stones can be moved then add the maybe list
                 stones.addAll(maybe);
-                Stone.sort(stones);
             }
         }
+        Stone.sort(stones);
         return stones;
     }
 
@@ -563,9 +581,7 @@ public class Board {
     }
 
     protected void cleanSelected() {
-        Iterator<Stone> it = selected.iterator();
-        while (it.hasNext()) {
-            Stone stone = it.next();
+        for (Stone stone : selected) {
             stone.setSelected(false);
         }
         selected = new ArrayList<>();
