@@ -28,6 +28,17 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:id="@+id/shuffle"
+                android:layout_width="60dp"
+                android:layout_height="48dp"
+                android:src="@drawable/shuffle"
+                app:layout_constraintBottom_toTopOf="@+id/board6"
+                app:layout_constraintEnd_toStartOf="@+id/board2"
+                app:layout_constraintStart_toEndOf="@+id/board1"
+                app:layout_constraintTop_toBottomOf="@+id/board2"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageView
                 android:id="@+id/board1"
                 android:layout_width="193dp"
                 android:layout_height="193dp"
@@ -109,34 +120,66 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </HorizontalScrollView>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClick2"
-        android:text="Button"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTop"
+        android:layout_width="172dp"
+        android:layout_height="70dp"
         app:layout_constraintBottom_toTopOf="@+id/BoardsScroll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/shuffle"
-        android:layout_width="60dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="32dp"
-        android:src="@drawable/shuffle"
-        app:layout_constraintEnd_toEndOf="@+id/BoardsScroll"
-        app:layout_constraintStart_toStartOf="@+id/BoardsScroll"
-        app:layout_constraintTop_toBottomOf="@+id/BoardsScroll"
-        tools:ignore="SpeakableTextPresentCheck" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
+        android:id="@+id/recyclerViewBottom"
+        android:layout_width="172dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/BoardsScroll"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <ImageView
+        android:id="@+id/topRightArrow"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTop"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewTop"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTop"
+        app:srcCompat="@drawable/arrow_final" />
+
+    <ImageView
+        android:id="@+id/topLeftArrow"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="12dp"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTop"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerViewTop"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTop"
+        app:srcCompat="@drawable/arrow_final" />
+
+    <ImageView
+        android:id="@+id/bottomLeftArrow"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="12dp"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBottom"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerViewBottom"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewBottom"
+        app:srcCompat="@drawable/arrow_final" />
+
+    <ImageView
+        android:id="@+id/bottomRightArrow"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBottom"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewBottom"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewBottom"
+        app:srcCompat="@drawable/arrow_final" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

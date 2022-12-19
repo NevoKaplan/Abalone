@@ -58,12 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            AI.getInstance(control.getBoard().getPlayer() * -1);
-        }
-        else {
-            AI.removeInstance();
-        }
+        control.onCheckedChanged(isChecked);
     }
 
 

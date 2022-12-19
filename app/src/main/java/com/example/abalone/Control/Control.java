@@ -77,4 +77,13 @@ public class Control {
     public Board getBoard() {
         return this.board;
     }
+
+    public void onCheckedChanged(boolean isChecked) {
+        if (isChecked) {
+            AI.getInstance(board.getPlayer() * -1);
+        }
+        else {
+            AI.removeInstance();
+        }
+    }
 }
