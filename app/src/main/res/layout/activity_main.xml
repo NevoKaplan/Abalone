@@ -13,13 +13,12 @@
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:minHeight="48dp"
         android:text="Activate AI"
-        app:layout_constraintBottom_toTopOf="@+id/bGerman"
-        app:layout_constraintEnd_toEndOf="@+id/bGerman"
-        app:layout_constraintStart_toStartOf="@+id/bNormal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.6" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/gridFrame"
@@ -30,51 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/hexagon" />
-
-    <Button
-        android:id="@+id/bNormal"
-        android:layout_width="148dp"
-        android:layout_height="wrap_content"
-        android:text="Normal"
-        app:layout_constraintBottom_toTopOf="@+id/gridFrame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.17"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35000002" />
-
-    <Button
-        android:id="@+id/bGerman"
-        android:layout_width="148dp"
-        android:layout_height="wrap_content"
-        android:text="German Daisy"
-        app:layout_constraintBottom_toBottomOf="@+id/bNormal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toEndOf="@+id/bNormal"
-        app:layout_constraintTop_toTopOf="@+id/bNormal"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/bSnakes"
-        android:layout_width="148dp"
-        android:layout_height="wrap_content"
-        android:text="Snakes"
-        app:layout_constraintBottom_toTopOf="@+id/gridFrame"
-        app:layout_constraintEnd_toEndOf="@+id/bNormal"
-        app:layout_constraintStart_toStartOf="@+id/bNormal"
-        app:layout_constraintTop_toBottomOf="@+id/bNormal" />
-
-    <Button
-        android:id="@+id/bCrown"
-        android:layout_width="148dp"
-        android:layout_height="wrap_content"
-        android:text="Crown"
-        app:layout_constraintBottom_toBottomOf="@+id/bSnakes"
-        app:layout_constraintEnd_toEndOf="@+id/bGerman"
-        app:layout_constraintStart_toStartOf="@+id/bGerman"
-        app:layout_constraintTop_toTopOf="@+id/bSnakes"
-        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

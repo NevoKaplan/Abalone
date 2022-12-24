@@ -245,10 +245,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void buttons() {
-        findViewById(R.id.bCrown).setOnClickListener(this::onClick);
-        findViewById(R.id.bGerman).setOnClickListener(this::onClick);
-        findViewById(R.id.bNormal).setOnClickListener(this::onClick);
-        findViewById(R.id.bSnakes).setOnClickListener(this::onClick);
         Switch switch1 = findViewById(R.id.switch1);
         switch1.setOnCheckedChangeListener(this::onCheckedChanged);
         switch1.setChecked(AI.hasInstance());
@@ -275,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(View view) {
+    /*public void onClick(View view) {
         int n = -1;
         switch(view.getId()) {
             case R.id.bNormal:
@@ -297,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
             board = control.setUpBoard(n);
             updateBoard();
         }
-    }
+    }*/
 
     @Override
     public void onBackPressed() {

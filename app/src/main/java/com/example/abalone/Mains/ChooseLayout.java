@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -15,6 +14,8 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.example.abalone.Control.Layouts;
@@ -58,7 +59,7 @@ public class ChooseLayout extends AppCompatActivity {
 
         onBegin();
         onChange();
-
+        arrowAnimations();
     }
 
     @Override
@@ -412,6 +413,18 @@ public class ChooseLayout extends AppCompatActivity {
                 redPiece = possible[index % possible.length];
         }
     }
+
+    // arrow animation
+    private void arrowAnimations() {
+        Animation right = AnimationUtils.loadAnimation(this, R.anim.move_horizontal_right);
+        Animation left = AnimationUtils.loadAnimation(this, R.anim.move_horizontal_left);
+
+        findViewById(R.id.topRightArrow).setAnimation(right);
+        findViewById(R.id.bottomRightArrow).setAnimation(right);
+        findViewById(R.id.topLeftArrow).setAnimation(left);
+        findViewById(R.id.bottomLeftArrow).setAnimation(left);
+    }
+
 
 
 

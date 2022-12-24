@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:paddingStart="10dp"
     android:paddingEnd="10dp"
-    android:background="@drawable/gradient_background"
+    android:background="@drawable/gradient_background_variation"
     tools:context=".Mains.ChooseLayout">
 
 
@@ -109,17 +109,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </HorizontalScrollView>
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onClick2"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/BoardsScroll"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/shuffle"
         android:layout_width="60dp"
@@ -127,9 +116,72 @@
         android:layout_marginTop="32dp"
         android:src="@drawable/shuffle"
         app:layout_constraintEnd_toEndOf="@+id/BoardsScroll"
+        app:layout_constraintHorizontal_bias="0.92"
         app:layout_constraintStart_toStartOf="@+id/BoardsScroll"
         app:layout_constraintTop_toBottomOf="@+id/BoardsScroll"
         tools:ignore="SpeakableTextPresentCheck" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewTop"
+        android:layout_width="172dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toTopOf="@+id/BoardsScroll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewBottom"
+        android:layout_width="172dp"
+        android:layout_height="70dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BoardsScroll"
+        app:layout_constraintVertical_bias="0.4" />
+
+    <ImageView
+        android:id="@+id/topRightArrow"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTop"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewTop"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTop"
+        app:srcCompat="@drawable/arrow_final_shaded" />
+
+    <ImageView
+        android:id="@+id/topLeftArrow"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="12dp"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTop"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerViewTop"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewTop"
+        app:srcCompat="@drawable/arrow_final_shaded" />
+
+    <ImageView
+        android:id="@+id/bottomLeftArrow"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="12dp"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBottom"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerViewBottom"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewBottom"
+        app:srcCompat="@drawable/arrow_final_shaded" />
+
+    <ImageView
+        android:id="@+id/bottomRightArrow"
+        android:layout_width="45dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBottom"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewBottom"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewBottom"
+        app:srcCompat="@drawable/arrow_final_shaded" />
 
 
 

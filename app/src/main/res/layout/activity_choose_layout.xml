@@ -5,7 +5,7 @@
     android:id="@+id/scrollLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="@drawable/gradient_background_variation"
     android:paddingStart="10dp"
     android:paddingEnd="10dp"
     tools:context=".Mains.ChooseLayout">
@@ -148,7 +148,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTop"
         app:layout_constraintStart_toEndOf="@+id/recyclerViewTop"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewTop"
-        app:srcCompat="@drawable/arrow_final" />
+        app:srcCompat="@drawable/arrow_final_shaded" />
 
     <ImageView
         android:id="@+id/topLeftArrow"
@@ -159,7 +159,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewTop"
         app:layout_constraintEnd_toStartOf="@+id/recyclerViewTop"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewTop"
-        app:srcCompat="@drawable/arrow_final" />
+        app:srcCompat="@drawable/arrow_final_shaded" />
 
     <ImageView
         android:id="@+id/bottomLeftArrow"
@@ -170,7 +170,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBottom"
         app:layout_constraintEnd_toStartOf="@+id/recyclerViewBottom"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewBottom"
-        app:srcCompat="@drawable/arrow_final" />
+        app:srcCompat="@drawable/arrow_final_shaded" />
 
     <ImageView
         android:id="@+id/bottomRightArrow"
@@ -180,6 +180,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/recyclerViewBottom"
         app:layout_constraintStart_toEndOf="@+id/recyclerViewBottom"
         app:layout_constraintTop_toTopOf="@+id/recyclerViewBottom"
-        app:srcCompat="@drawable/arrow_final" />
+        app:srcCompat="@drawable/arrow_final_shaded" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
