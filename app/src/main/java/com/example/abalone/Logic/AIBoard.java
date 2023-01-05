@@ -16,8 +16,9 @@ public class AIBoard extends Board {
 
     public boolean sideMoveable;
 
-    private static HashMap<Integer, AIBoard> alreadyBoards = new HashMap<>();
-    private static int alreadyBoardsCount;
+    private HashMap<Integer, AIBoard> alreadyBoardsShort;
+    private ArrayList<Stone[][]> alreadyBoards;
+    private int alreadyBoardsShortCount;
 
     private static final double[][] fromMiddle =
             {{5.656854249492381, 5.0, 4.47213595499958, 4.123105625617661, 4.0, 0.0, 0.0, 0.0, 0.0},
@@ -37,12 +38,14 @@ public class AIBoard extends Board {
         this.depth = MAX_DEPTH;
         for (int i = 0; i < madeMove.length; i++)
             madeMove[i] = new ArrayList<>();
-        alreadyBoardsCount = 0;
-        alreadyBoards.clear();
+        alreadyBoardsShortCount = 0;
+        alreadyBoardsShort = new HashMap<>();
+        alreadyBoards = new ArrayList<>();
         preDeadBlue = deadBlue;
         preDeadRed = deadRed;
 
         sideMoveable = false;
+        alreadyBoardsShort = new HashMap<>();
     }
 
     public AIBoard(AIBoard board) {
@@ -56,7 +59,9 @@ public class AIBoard extends Board {
             madeMove[i] = new ArrayList<>();
         preDeadBlue = deadBlue;
         preDeadRed = deadRed;
-
+        alreadyBoardsShort = new HashMap<>();
+        alreadyBoardsShortCount = 0;
+        alreadyBoards = new ArrayList<>();
         sideMoveable = false;
     }
 
@@ -100,12 +105,37 @@ public class AIBoard extends Board {
     }
 
     public ArrayList<AIBoard>[] getNextBoards() {
-        ArrayList<AIBoard>[] nextBoards = this.IterateNextBoards2();
+        ArrayList<AIBoard>[] nextBoards = this.IterateNextBoards();
         return nextBoards;
     }
 
 
-    private ArrayList<AIBoard>[] IterateNextBoards2() {
+    private boolean checkHelper(Stone[][] other) {
+        for (Stone[][] og : alreadyBoards) {
+            if (hexEquals(og, other))
+                return false;
+        }
+        return true;
+    }
+    private boolean checkNotIfExists(Stone[][] board) {
+        if (checkHelper(board)) {
+            alreadyBoards.add(board);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean hexEquals(Stone[][] og, Stone[][] other) {
+        for (int i = 0; i < og.length; i++) {
+            for (int j = 0; j < og[0].length; j++) {
+                if (og[i][j].getMainNum() != other[i][j].getMainNum())
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private ArrayList<AIBoard>[] IterateNextBoards() {
         ArrayList<AIBoard>[] nextBoards = new ArrayList[3];
         for (int i = 0; i < nextBoards.length; i++)
             nextBoards[i] = new ArrayList<>();
@@ -127,6 +157,8 @@ public class AIBoard extends Board {
                         tempSelected = new ArrayList<>();
                         tempSelected.add(hex[i][j]);
                         tempSelected.add(availlable);
+                        Stone.sort(tempSelected);
+
                         nextBoards[1].addAll(findMoveMultiple(tempSelected)); // double - problem here
                         ArrayList<Stone> availableTriple = availableStonesForDouble(tempSelected);
 
@@ -155,8 +187,9 @@ public class AIBoard extends Board {
             for (Stone s : aiBoard.selected)
                 aiBoard.madeMove[0].add(new Stone(s));
             aiBoard.doMoveSingle(aiBoard.hex[target.row][target.col]);
-            boards.add(aiBoard);
             aiBoard.cleanSelected();
+            if (checkNotIfExists(aiBoard.hex))
+                boards.add(aiBoard);
         }
         return boards;
     }
@@ -175,81 +208,11 @@ public class AIBoard extends Board {
                 aiBoard.madeMove[0].add(new Stone(s));
 
             aiBoard.doMoveMultiple(aiBoard.hex[target.row][target.col]);
-            boards.add(aiBoard);
             aiBoard.cleanSelected();
+            if (checkNotIfExists(aiBoard.hex))
+                boards.add(aiBoard);
         }
         return boards;
-    }
-
-    // need to check for every move
-    private ArrayList<AIBoard> IterateNextBoards() {
-        ArrayList<AIBoard> nextBoards = new ArrayList<>();
-        int count = 0;                               // count for how many troops already checked - to check less
-        if (this.player == 1)
-            count += this.deadBlue;
-        else
-            count += this.deadRed;
-        for (int i = 0; i < this.hex.length && count <= 14; i++){
-            for (int j = 0; j < this.hex[i].length; j++) {
-                if (this.hex[i][j].getMainNum() == this.player) {
-                    count++;
-                    changeSelected(this.hex[i][j]);
-
-                    ArrayList<Stone> targetStones = availableTargets();
-                    ArrayList<Stone> tempSelected = new ArrayList<>();
-                    tempSelected.add(this.hex[i][j]);
-                    nextBoards.addAll(iterate(targetStones, tempSelected));
-
-                    this.cleanSelected();
-                    changeSelected(this.hex[i][j]);
-                    ArrayList<Stone> availableStones = availableStones2();
-                    this.cleanSelected();
-
-
-                    if (availableStones != null) {
-                        for (Stone stone : availableStones) {
-                            changeSelected(this.hex[i][j]);
-                            choosePiece(stone, this.hex[i][j]);
-                            tempSelected.addAll(this.selected);
-                            targetStones = availableTargets();
-                            nextBoards.addAll(iterate(targetStones, tempSelected));
-                            this.cleanSelected();
-                        }
-                    }
-                }
-            }
-        }
-
-        return nextBoards;
-    }
-
-    private ArrayList<AIBoard> iterate(ArrayList<Stone> targetStones, ArrayList<Stone> tempSelected) {
-        this.cleanSelected();
-
-        ArrayList<AIBoard> tempList = new ArrayList<>();
-        if (targetStones != null) {
-            AIBoard aiBoard;
-            for (Stone target : targetStones) {
-                aiBoard = new AIBoard(this);
-                for (Stone sel : tempSelected)
-                    aiBoard.changeSelected(sel);
-                //aiBoard.selected = this.selected;
-                //aiBoard.selectedSize = this.selectedSize;
-                aiBoard.sideMoveable = aiBoard.getFullMove(target);
-
-                //aiBoard.selectedSize -= aiBoard.toBe.size();
-                //aiBoard.selected.removeAll(aiBoard.toBe);
-                aiBoard.setBestSelected();
-                aiBoard.doMoveOld();
-                if (!alreadyBoards.containsValue(aiBoard)) {
-                    tempList.add(aiBoard);
-                    alreadyBoards.put(alreadyBoardsCount, aiBoard);
-                    alreadyBoardsCount++;
-                }
-                this.cleanSelected();
-            }
-        }
-        return tempList;
     }
 
     private void doMoveSingle(Stone moveTo) {
@@ -287,46 +250,6 @@ public class AIBoard extends Board {
 
         beforeLineMove(drow, dcol);
 
-    }
-
-    private boolean getFullMove(Stone moveTo) {
-
-        boolean reverse = this.shouldReverse(moveTo);
-        if (beforeSideMove(moveTo, false))
-            return true;
-
-        shouldReverse2(reverse);
-        return false;
-    }
-
-    public void doMoveOld() {
-        Stone moveTo = toBe.get(toBe.size()-1);
-        moveTo.setMainNum(0);
-        boolean reverse = this.shouldReverse(moveTo);
-
-        this.toBe.remove(moveTo);
-
-        Stone last = selected.get(selectedSize - 1);
-        int drow = moveTo.row - last.row;
-        int dcol = moveTo.col - last.col;
-
-
-        if (this.sideMoveable) {
-            if ((drow >= 1 && dcol <= -1) || (drow <= -1 && dcol >= 1)) { // if more than 1 selected and not same line and too far, need to reverse
-                Stone.reverseList(selected);
-                last = selected.get(selectedSize - 1);
-                drow = (moveTo.row - last.row);
-                dcol = (moveTo.col - last.col);
-            }
-            sideMove(drow, dcol);
-
-        }
-        else {
-            shouldReverse2(reverse);
-            beforeLineMove(drow, dcol);
-        }
-        //this.moveStones(this.toBe.get(toBe.size()-1));
-        this.cleanSelected();
     }
 
     public int getWinner() {
@@ -381,25 +304,6 @@ public class AIBoard extends Board {
         selected.addAll(toBe);
         selectedSize += toBe.size();
     }
-
-
-    // checks if player
-    protected void choosePiece(Stone available, Stone chosen) {
-
-        // there is only one stone in the array...
-        for (int[] var: dirArr) { // all directions
-            if (var[0] == available.row - chosen.row && var[1] == available.col - chosen.col) {
-                changeSelected(available);
-                return;
-            }
-            else if (2 * var[0] == available.row - chosen.row && 2 * var[1] == available.col - chosen.col) {
-                changeSelected(available);
-                changeSelected(hex[chosen.row + var[0]][chosen.col + var[1]]);
-                return;
-            } // checks for "legality" of the stone and adds them to the list if legal
-        }
-    }
-
 
     protected ArrayList<Stone> availableTargetsForSingle(Stone temp) {
         // if code here, can only be 1 selected
